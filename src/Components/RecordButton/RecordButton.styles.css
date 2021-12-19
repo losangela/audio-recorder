@@ -1,0 +1,51 @@
+.record-button {
+  flex: 1;
+  display: flex;
+  background-color: white;
+  border: 2px solid gray;
+  box-shadow: 1px 1px 5px gray;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.record-button:hover {
+  background-color: rgb(233, 233, 233);
+}
+
+.record-button:active {
+  background-color: rgb(218, 218, 218);
+}
+
+.record-button-recording {
+  flex: 1;
+  display: flex;
+  background-color: red;
+  border: 2px solid gray;
+  box-shadow: 1px 1px 5px gray;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.center-button {
+  flex: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  background-color: red;
+}
+
+.center-button-recording {
+  flex: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  background-color: white;
+}
+
+.center-button-recording:hover {
+  background-color: rgb(233, 233, 233);
+}
+
+.center-button-recording:active {
+  background-color: rgb(218, 218, 218);
+}
