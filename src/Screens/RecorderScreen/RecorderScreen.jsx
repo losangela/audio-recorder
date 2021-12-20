@@ -2,6 +2,7 @@ import AudioPlayer from 'Components/AudioPlayer/AudioPlayer';
 import RecordButton from 'Components/RecordButton';
 import { useEffect } from 'react/cjs/react.development';
 import { useState } from 'react/cjs/react.development';
+import { getRecordings, uploadRecording } from 'serverClient';
 import './RecorderScreen.styles.css';
 
 let mediaRecorder;
@@ -21,14 +22,18 @@ const RecorderScreen = () => {
       
       mediaRecorder = new MediaRecorder(stream, options);
 
-      mediaRecorder.addEventListener('dataavailable', function(e) {
+      mediaRecorder.addEventListener('dataavailable', (e) => {
         if (e.data.size > 0) recordedChunks.push(e.data);
       });
 
-      mediaRecorder.addEventListener('stop', function() {
+      mediaRecorder.addEventListener('stop', async () => {
         const recordingBlob = new Blob(recordedChunks); 
         const audioURL = URL.createObjectURL(recordingBlob);
         const fileName = `audio${recordingCount}.wav`;
+
+        // const res = await getRecordings();
+        await uploadRecording({ fileName, recordingBlob });
+
         setRecordingsList([...recordingsList, { audioURL, fileName }])
         setRecordingCount(recordingCount + 1);
         recordedChunks = [];

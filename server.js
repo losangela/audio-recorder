@@ -1,21 +1,29 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const app = express();
+const port = 4000;
 
-const port = 3000;
+app.use(cors());
+app.use(express.json());
 
-const server = http.createServer((req, res) => {
-  const { url, method } = req;
-  
-  if (url === '/file' && method === 'POST') {
-    req.on('data', (data) => {
-      // save .wav file
-    })
-  }
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
+app.get('/', (req, res) => {
+  res.send('Hello World!')
 });
 
-server.listen(port, () => {
-  console.log(`Server running at ${port}/`);
+app.get('/recordings', (req, res) => {
+  res.json('Hello World!')
+});
+
+const upload = multer({ dest: __dirname + '/public/uploads/' });
+const type = upload.single('wav');
+
+app.post('/recording', type, (req, res) => {
+  const { body, file } = req;
+  console.log({body, file});
+  res.json('i got your recording')
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
 });
