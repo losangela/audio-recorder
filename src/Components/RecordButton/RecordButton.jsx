@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './RecordButton.styles.css';
 
-const RecordButton = () => {
+const RecordButton = ({ startRecording, stopRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
 
-  useEffect(() => {
-    if (isRecording) {
-    } else {
-    }
-  }, [isRecording]);
-
   const handleOnClick = () => {
+    if (isRecording) {
+      stopRecording()
+    } else {
+      startRecording()
+    }
     setIsRecording(!isRecording)
   };
 

@@ -1,29 +1,23 @@
 import { useEffect, useState } from 'react';
 import './AudioPlayer.styles.css';
 
-const AudioPlayer = () => {
-  const [audio, setAudio] = useState();
-  const [isPlaying, setIsPlaying] = useState(false);
+const AudioPlayer = ({ src, fileName, handleDelete }) => {
 
+  const DownloadButton = () => <a href={src} id="download" className="button" download={fileName}>Download</a>;
   
-  useEffect(() => {
-    if (isPlaying) {
-      // recorder.start();
-    } else {
-      // recorder.stop();
-    }
-  }, [isPlaying]);
-
-  const handlePlayOnClick = () => {
-    setIsPlaying(!isPlaying)
-  };
-
+  const DeleteButton = () => {
+    return (
+      <button id="delete" onClick={handleDelete}>Delete</button>
+    )
+  }
   return (
-    <div className="audio-player">
-      <div className="play-button" onClick={handlePlayOnClick}>
-        {isPlaying ? '□' : '▷'}
+    <div className='recording-wrapper'>
+      <p>{fileName}</p>
+      <div className="flex-row center">
+        <audio controls controlsList="nodownload" src={src} />
+        <DownloadButton />
+        <DeleteButton />
       </div>
-      <div className='audio-buffer-bar' />
     </div>
   );
 }

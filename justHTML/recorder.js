@@ -4,7 +4,7 @@ const recordingsList = document.getElementById('recordings-list');
 
 stopButton.disabled = true;
 
-const handleSuccess = function(stream) {
+const handleSuccess = (stream) => {
   const options = {
     audioBitsPerSecond : 128000,
     mimeType: 'audio/webm'
@@ -43,7 +43,7 @@ const handleSuccess = function(stream) {
 
     downloadButton.setAttribute('href', audioURL);
     downloadButton.textContent = 'Download';
-    downloadButton.id = 'delete';
+    downloadButton.id = 'download';
     downloadButton.download = fileName;
     downloadButton.className = "button";
 
