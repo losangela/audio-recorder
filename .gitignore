@@ -11,6 +11,9 @@
 # production
 /build
 
+# blobs
+/public/uploads
+
 # ec2
 unearth-ec2-key.pem
 
