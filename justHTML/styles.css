@@ -1,0 +1,29 @@
+.recorder-screen {
+  padding: 20px;
+  align-content: center;
+  justify-content: center;
+  background-color: pink;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 20px;
+}
+
+body, button, input {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  margin: 0px 10px;
+}

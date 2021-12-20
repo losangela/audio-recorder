@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Audio Recorder</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="recorder-screen">
+
+      <header class="header">
+        Record audio
+      </header>
+
+      Press the button below to record! Press again to finish recording.
+
+      <p></p>
+
+
+      <div class="flex-row" id="buttons">
+        <button id="start">Record</button>
+        <button id="stop">Stop</button>
+      </div><p></p>
+
+      <section id="sound-clips">
+        <!-- recordings go here -->
+      </section>
+      <audio id="player" controls></audio><p></p>
+      <a id="download">Download</a><p></p>
+    </div>
+    <script src="recorder.js"></script>
+  </body>
+</html>
