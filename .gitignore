@@ -11,6 +11,9 @@
 # production
 /build
 
+# ec2
+unearth-ec2-key.pem
+
 # misc
 .DS_Store
 .env.local

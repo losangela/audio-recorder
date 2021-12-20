@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './AudioPlayer.styles.css';
 
 const AudioPlayer = ({ src, fileName, handleDelete }) => {
