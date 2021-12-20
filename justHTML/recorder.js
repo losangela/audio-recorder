@@ -1,8 +1,6 @@
-const downloadLink = document.getElementById('download');
-const stopButton = document.getElementById('stop');
-const soundClips = document.getElementById('sound-clips');
 const startButton = document.getElementById('start');
-const player = document.getElementById('player');
+const stopButton = document.getElementById('stop');
+const recordingsList = document.getElementById('recordings-list');
 
 stopButton.disabled = true;
 
@@ -12,6 +10,7 @@ const handleSuccess = function(stream) {
     mimeType: 'audio/webm'
   };
   let recordedChunks = [];
+  let recordingsCount = 0;
   const mediaRecorder = new MediaRecorder(stream, options);
 
   mediaRecorder.addEventListener('dataavailable', function(e) {
@@ -19,38 +18,55 @@ const handleSuccess = function(stream) {
   });
 
   mediaRecorder.addEventListener('stop', function() {
-    downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
-    player.src = downloadLink.href;
-    downloadLink.download = 'acetest.wav';
-    // const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
+    recordingsCount++;
+    const recordingBlob = new Blob(recordedChunks); 
+    const audioURL = URL.createObjectURL(recordingBlob);
+    const fileName = `audio${recordingsCount}.wav`;
 
-    // const clipContainer = document.createElement('article');
-    // const clipLabel = document.createElement('p');
-    // const audio = document.createElement('audio');
-    // const deleteButton = document.createElement('button');
+    const clipContainer = document.createElement('article');
+    const clipLabel = document.createElement('p');
+    const audio = document.createElement('audio');
+    const downloadButton = document.createElement('a');
+    const deleteButton = document.createElement('button');
+    const playerWrapper = document.createElement('div');
 
-    // clipContainer.classList.add('clip');
-    // audio.setAttribute('controls', '');
-    // deleteButton.textContent = 'Delete';
-    // deleteButton.className = 'delete';
+    clipContainer.classList.add('recording-wrapper');
+    playerWrapper.classList.add('flex-row');
+    playerWrapper.classList.add('center');
 
-    // if(clipName === null) {
-    //   clipLabel.textContent = 'My unnamed clip';
-    // } else {
-    //   clipLabel.textContent = clipName;
-    // }
+    audio.setAttribute('controls', '');
+    audio.controls = true;
+    audio.controlsList = "nodownload";
+    audio.src = audioURL;
 
-    // clipContainer.appendChild(audio);
-    // clipContainer.appendChild(clipLabel);
-    // clipContainer.appendChild(deleteButton);
-    // soundClips.appendChild(clipContainer);
+    clipLabel.textContent = fileName;
 
-    // audio.controls = true;
-    // const blob = new Blob(recordedChunks, { 'type' : 'audio/ogg; codecs=opus' });
-    // recordedChunks = [];
-    // const audioURL = window.URL.createObjectURL(blob);
-    // audio.src = audioURL;
-    // console.log("recorder stopped");
+    downloadButton.setAttribute('href', audioURL);
+    downloadButton.textContent = 'Download';
+    downloadButton.id = 'delete';
+    downloadButton.download = fileName;
+    downloadButton.className = "button";
+
+    deleteButton.textContent = 'Delete';
+    deleteButton.id = 'delete';
+
+    
+
+    
+    playerWrapper.appendChild(audio);
+    playerWrapper.appendChild(downloadButton);
+    playerWrapper.appendChild(deleteButton);
+    clipContainer.appendChild(clipLabel);
+    clipContainer.appendChild(playerWrapper);
+    recordingsList.appendChild(clipContainer);
+
+    
+    recordedChunks = [];
+
+    deleteButton.onclick = function(e) {
+      let eventTarget = e.target;
+      eventTarget.parentNode.parentNode.parentNode.removeChild(eventTarget.parentNode.parentNode);
+    }
   });
 
   stopButton.addEventListener('click', function() {
@@ -58,7 +74,6 @@ const handleSuccess = function(stream) {
     mediaRecorder.stop();
     stopButton.disabled = true;
     startButton.disabled = false;
-
   });
 
   startButton.addEventListener('click', () => {
