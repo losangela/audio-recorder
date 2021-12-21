@@ -9,12 +9,7 @@ const RecordButton = ({ startRecording, stopRecording }) => {
   const [secondsLeft, setSecondsLeft] = useState(30);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   if (isRecording) {
-    //     stopRecording();
-    //     setIsRecording(!isRecording);
-    //   };
-    // }, 30000);
+    // Handles ticking timer of record button
     if (isRecording && secondsLeft > 0) {
       timeout = setTimeout(() => {
         setSecondsLeft(secondsLeft - 1);

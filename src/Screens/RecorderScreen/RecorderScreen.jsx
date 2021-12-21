@@ -9,16 +9,24 @@ let mediaRecorder;
 
 const RecorderScreen = () => {
   const [recordingsList, setRecordingsList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    // gets all recordings from server
     const getData = async () => {
-      const { data } = await getRecordings();
-      setRecordingsList(data)
+      try {
+        const { data } = await getRecordings();
+        setRecordingsList(data)
+        setErrorMessage('');
+      } catch {
+        setErrorMessage('There was an error connecting to the server. You can still record audio but it can only be played locally.')
+      }
     }
     getData();
   }, []);
 
   useEffect(() => {
+    // handles media recorder and grabs mic permission from browser
     const handleSuccess = (stream) => {
       let recordedChunks = [];
       
@@ -34,12 +42,18 @@ const RecorderScreen = () => {
       });
 
       mediaRecorder.addEventListener('stop', async () => {
-        const recordingBlob = new Blob(recordedChunks); 
-        // const audioURL = URL.createObjectURL(recordingBlob);
+        const recordingBlob = new Blob(recordedChunks);
         const fileName = `${new Date().getTime()}.wav`;
         
-        const { data: { url } } = await uploadRecording({ fileName, recordingBlob });
-        setRecordingsList([...recordingsList, { audioURL: url, fileName }])
+        try {
+          const { data: { url } } = await uploadRecording({ fileName, recordingBlob });
+          setRecordingsList([...recordingsList, { audioURL: url, fileName }])
+        } catch {
+          // if for any reason an error occured uploading the recording to the server, serve file locally.
+          const audioURL = URL.createObjectURL(recordingBlob);
+          setRecordingsList([...recordingsList, { audioURL, fileName }])
+        }
+        
         recordedChunks = [];
       });
     };
@@ -58,12 +72,18 @@ const RecorderScreen = () => {
 
   const Description = () => `Press the button below to record! Press again to finish recording.`;
 
+  const ErrorMessage = () => (
+    <div className="error-message">
+      {errorMessage}
+    </div>
+  )
   return (
     <div className="recorder-screen">
 
       <Header />
       <Description />
-      
+      <ErrorMessage />
+
       <RecordButton
         startRecording={() => mediaRecorder.start()}
         stopRecording={() => mediaRecorder.stop()}

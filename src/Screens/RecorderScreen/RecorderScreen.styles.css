@@ -18,3 +18,9 @@
 body, button {
   font-family: 'Courier New', Courier, monospace;
 }
+
+.error-message {
+  font-size: small;
+  /* color: gray; */
+  opacity: 50%;
+}

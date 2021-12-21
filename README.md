@@ -15,7 +15,7 @@ On the day of your interview, we would like you to demo this app for us and expl
 ## Getting Started
 
 ### For the web app
-- Run `yarn start` in the terminal and it will open `http://localhost:3000/`
+- Run `yarn start` in the terminal and it will open `http://localhost:3000/`. Designed for Chrome desktop.
 - Press the red button on the page to record. Recordings are sent to a server and saved in a bucket.
 
 ### For the server
