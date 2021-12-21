@@ -21,6 +21,5 @@ body, button {
 
 .error-message {
   font-size: small;
-  /* color: gray; */
   opacity: 50%;
 }

@@ -9,7 +9,7 @@ let mediaRecorder;
 
 const RecorderScreen = () => {
   const [recordingsList, setRecordingsList] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [serverErrorMessage, setServerErrorMessage] = useState('');
 
   useEffect(() => {
     // gets all recordings from server
@@ -17,9 +17,9 @@ const RecorderScreen = () => {
       try {
         const { data } = await getRecordings();
         setRecordingsList(data)
-        setErrorMessage('');
+        setServerErrorMessage('');
       } catch {
-        setErrorMessage('There was an error connecting to the server. You can still record audio but it can only be played locally.')
+        setServerErrorMessage('There was an error connecting to the server. You can still record audio but it can only be played locally.')
       }
     }
     getData();
@@ -36,11 +36,11 @@ const RecorderScreen = () => {
       };
       
       mediaRecorder = new MediaRecorder(stream, options);
-
+  
       mediaRecorder.addEventListener('dataavailable', (e) => {
         if (e.data.size > 0) recordedChunks.push(e.data);
       });
-
+  
       mediaRecorder.addEventListener('stop', async () => {
         const recordingBlob = new Blob(recordedChunks);
         const fileName = `${new Date().getTime()}.wav`;
@@ -60,9 +60,9 @@ const RecorderScreen = () => {
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then(handleSuccess)
-      .catch(err => console.log('error grabbing usermedia'));
+      .catch(err => console.log('error grabbing mic'));
 
-  }, [recordingsList])
+  }, [recordingsList]);
 
   const Header = () => (
     <header className="header">
@@ -72,9 +72,9 @@ const RecorderScreen = () => {
 
   const Description = () => `Press the button below to record! Press again to finish recording.`;
 
-  const ErrorMessage = () => (
+  const ErrorMessage = ({ message }) => (
     <div className="error-message">
-      {errorMessage}
+      {message}
     </div>
   )
   return (
@@ -82,7 +82,7 @@ const RecorderScreen = () => {
 
       <Header />
       <Description />
-      <ErrorMessage />
+      <ErrorMessage message={serverErrorMessage} />
 
       <RecordButton
         startRecording={() => mediaRecorder.start()}

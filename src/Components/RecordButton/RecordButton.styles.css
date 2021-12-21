@@ -7,6 +7,7 @@
   box-shadow: 1px 1px 5px gray;
   border-radius: 50%;
   padding: 10px;
+  cursor: pointer;
 }
 
 .record-button:hover {
@@ -26,6 +27,7 @@
   box-shadow: 1px 1px 5px gray;
   border-radius: 50%;
   padding: 10px;
+  cursor: pointer;
 }
 
 .center-button {
@@ -40,6 +42,7 @@
   text-align: center;
   flex-direction: column;
   display: flex;
+  user-select: none;
 }
 
 .center-button-recording {
@@ -54,6 +57,7 @@
   text-align: center;
   flex-direction: column;
   display: flex;
+  user-select: none;
 }
 
 .center-button-recording:hover {
