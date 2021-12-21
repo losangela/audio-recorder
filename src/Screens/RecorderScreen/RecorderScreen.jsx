@@ -12,6 +12,14 @@ const RecorderScreen = () => {
   const [recordingCount, setRecordingCount] = useState(1);
 
   useEffect(() => {
+    const getData = async () => {
+      const { data } = await getRecordings();
+      setRecordingsList(data)
+    }
+    getData();
+  }, [1]);
+
+  useEffect(() => {
     const handleSuccess = (stream) => {
       let recordedChunks = [];
       
@@ -28,13 +36,11 @@ const RecorderScreen = () => {
 
       mediaRecorder.addEventListener('stop', async () => {
         const recordingBlob = new Blob(recordedChunks); 
-        const audioURL = URL.createObjectURL(recordingBlob);
-        const fileName = `audio${recordingCount}.wav`;
-
-        // const res = await getRecordings();
-        await uploadRecording({ fileName, recordingBlob });
-
-        setRecordingsList([...recordingsList, { audioURL, fileName }])
+        // const audioURL = URL.createObjectURL(recordingBlob);
+        const fileName = `${new Date().getTime()}.wav`;
+        
+        const { data: { url } } = await uploadRecording({ fileName, recordingBlob });
+        setRecordingsList([...recordingsList, { audioURL: url, fileName }])
         setRecordingCount(recordingCount + 1);
         recordedChunks = [];
       });

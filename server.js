@@ -23,7 +23,27 @@ app.get('/', (req, res) => {
 });
 
 app.get('/recordings', (req, res) => {
-  res.json('Hello World!')
+  console.log('incoming GET /recordings', req.rawHeaders);
+  const listAllKeys = (params) => new Promise((resolve, reject) => {
+    s3.listObjectsV2(params).promise()
+      .then(({Contents}) => {
+        const data = [];
+        const s3URL = `https://${process.env.BUCKET}.s3.amazonaws.com/`
+        for (let i in Contents) {
+          data.push({
+            audioURL: s3URL + Contents[i].Key,
+            fileName: Contents[i].Key.substring(11),
+          })
+        }
+        resolve(data);
+      })
+      .catch(reject);
+  });
+  
+  listAllKeys({Bucket: process.env.BUCKET, Prefix: 'recordings/', Delimiter: '/'})
+    .then((data) => res.send(data))
+    .catch(console.log);
+
 });
 
 const upload = multer({
@@ -31,8 +51,7 @@ const upload = multer({
     s3,
     bucket: 'unearth-voice-recorder',
     key: (req, file, cb) => {
-        console.log({s3Multer: file});
-        cb(null, file.originalname); //use Date.now() for unique file keys
+        cb(null, 'recordings/' + file.originalname);
     },
   }),
 });
@@ -40,9 +59,7 @@ const upload = multer({
 const type = upload.single('wav');
 
 app.post('/recording', type, (req, res) => {
-  const { body, file } = req;
-  console.log({body, file});
-  res.json('i got your recording')
+  res.json({ url: req.file.location });
 });
 
 app.listen(port, () => {
