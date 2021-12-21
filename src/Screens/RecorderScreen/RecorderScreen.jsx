@@ -17,7 +17,7 @@ const RecorderScreen = () => {
       setRecordingsList(data)
     }
     getData();
-  }, [1]);
+  }, []);
 
   useEffect(() => {
     const handleSuccess = (stream) => {

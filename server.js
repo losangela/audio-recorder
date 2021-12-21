@@ -7,7 +7,7 @@ const multerS3 = require('multer-s3');
 
 const app = express();
 const s3 = new aws.S3();
-const port = 4000;
+const port = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -22,8 +22,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
+// this request retrieves all .wav recordings in the s3 bucket
 app.get('/recordings', (req, res) => {
-  console.log('incoming GET /recordings', req.rawHeaders);
+
   const listAllKeys = (params) => new Promise((resolve, reject) => {
     s3.listObjectsV2(params).promise()
       .then(({Contents}) => {
@@ -58,10 +59,11 @@ const upload = multer({
 
 const type = upload.single('wav');
 
+// this request uploads a .wav recording to the s3 bucket
 app.post('/recording', type, (req, res) => {
   res.json({ url: req.file.location });
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`server listening at http://localhost:${port}`)
 });
