@@ -9,7 +9,6 @@ let mediaRecorder;
 
 const RecorderScreen = () => {
   const [recordingsList, setRecordingsList] = useState([]);
-  const [recordingCount, setRecordingCount] = useState(1);
 
   useEffect(() => {
     const getData = async () => {
@@ -41,7 +40,6 @@ const RecorderScreen = () => {
         
         const { data: { url } } = await uploadRecording({ fileName, recordingBlob });
         setRecordingsList([...recordingsList, { audioURL: url, fileName }])
-        setRecordingCount(recordingCount + 1);
         recordedChunks = [];
       });
     };
@@ -50,7 +48,7 @@ const RecorderScreen = () => {
       .then(handleSuccess)
       .catch(err => console.log('error grabbing usermedia'));
 
-  }, [recordingCount, recordingsList])
+  }, [recordingsList])
 
   const Header = () => (
     <header className="header">
