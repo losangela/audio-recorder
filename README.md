@@ -16,10 +16,14 @@ On the day of your interview, we would like you to demo this app for us and expl
 
 ### For the web app
 run `yarn start` in the terminal and it will open `http://localhost:3000/`
+
 Press the red button on the page to record. Recordings are sent to a server and saved in a bucket.
 
 ### For the server
 Server is running on an ec2 instance.
+
 run `ssh -i [.pem directory] ec2-user@[server DNS]`
+
 Once inside ec2, run `node server.js` to start your server.
+
 Users can now retrieve recordings!
