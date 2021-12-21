@@ -50,7 +50,7 @@ app.get('/recordings', (req, res) => {
 const upload = multer({
   storage: multerS3({
     s3,
-    bucket: 'unearth-voice-recorder',
+    bucket: process.env.BUCKET,
     key: (req, file, cb) => {
         cb(null, 'recordings/' + file.originalname);
     },
