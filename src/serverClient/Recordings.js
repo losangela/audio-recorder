@@ -1,14 +1,5 @@
-// import FormData from 'form-data';
 import serverClient from './ServerClient';
 import { handleResponse, handleError } from './Response';
-
-export const inferFileType = (uri) => {
-  const filename = uri.split('/').pop();
-  // Infer the type of the image
-  const match = /\.(\w+)$/.exec(filename);
-  const type = match ? `image/${match[1]}` : 'image';
-  return { filename, type };
-};
 
 export const getRecordings = async (input) => {
   try {
